@@ -1,0 +1,80 @@
+[03-Mar-2026 17:07:25 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'artetran_sigat_completo.users' doesn't exist in /home/artetran/public_html/sigat_completo/api/login.php:27
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/login.php(27): PDO->prepare('SELECT * FROM u...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/login.php on line 27
+[03-Mar-2026 17:08:06 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'artetran_sigat_completo.users' doesn't exist in /home/artetran/public_html/sigat_completo/api/login.php:27
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/login.php(27): PDO->prepare('SELECT * FROM u...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/login.php on line 27
+[04-Mar-2026 09:24:25 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'reset_token' in 'SET' in /home/artetran/public_html/sigat_completo/api/forgot_password.php:34
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/forgot_password.php(34): PDO->prepare('UPDATE users SE...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/forgot_password.php on line 34
+[04-Mar-2026 09:32:05 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'logo_url' in 'SET' in /home/artetran/public_html/sigat_completo/api/organization.php:37
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/organization.php(37): PDO->prepare('UPDATE organiza...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/organization.php on line 37
+[04-Mar-2026 09:32:10 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'logo_url' in 'SET' in /home/artetran/public_html/sigat_completo/api/organization.php:37
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/organization.php(37): PDO->prepare('UPDATE organiza...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/organization.php on line 37
+[04-Mar-2026 09:32:19 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'logo_url' in 'SET' in /home/artetran/public_html/sigat_completo/api/organization.php:37
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/organization.php(37): PDO->prepare('UPDATE organiza...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/organization.php on line 37
+[04-Mar-2026 09:32:47 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'logo_url' in 'SET' in /home/artetran/public_html/sigat_completo/api/organization.php:37
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/organization.php(37): PDO->prepare('UPDATE organiza...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/organization.php on line 37
+[04-Mar-2026 09:33:45 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'logo_url' in 'SET' in /home/artetran/public_html/sigat_completo/api/organization.php:37
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/organization.php(37): PDO->prepare('UPDATE organiza...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/organization.php on line 37
+[04-Mar-2026 09:34:53 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'logo_url' in 'SET' in /home/artetran/public_html/sigat_completo/api/organization.php:37
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/organization.php(37): PDO->prepare('UPDATE organiza...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/organization.php on line 37
+[04-Mar-2026 09:54:24 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'reset_token' in 'SET' in /home/artetran/public_html/sigat_completo/api/forgot_password.php:34
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/forgot_password.php(34): PDO->prepare('UPDATE users SE...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/forgot_password.php on line 34
+[04-Mar-2026 10:01:33 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'reset_token' in 'SET' in /home/artetran/public_html/sigat_completo/api/forgot_password.php:34
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/forgot_password.php(34): PDO->prepare('UPDATE users SE...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/forgot_password.php on line 34
+[04-Mar-2026 10:01:42 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'reset_token' in 'SET' in /home/artetran/public_html/sigat_completo/api/forgot_password.php:34
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/forgot_password.php(34): PDO->prepare('UPDATE users SE...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/forgot_password.php on line 34
+[04-Mar-2026 10:01:59 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'reset_token' in 'SET' in /home/artetran/public_html/sigat_completo/api/forgot_password.php:34
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/forgot_password.php(34): PDO->prepare('UPDATE users SE...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/forgot_password.php on line 34
+[04-Mar-2026 10:02:37 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'reset_token' in 'SET' in /home/artetran/public_html/sigat_completo/api/forgot_password.php:34
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/forgot_password.php(34): PDO->prepare('UPDATE users SE...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/forgot_password.php on line 34
+[04-Mar-2026 10:02:53 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'reset_token' in 'SET' in /home/artetran/public_html/sigat_completo/api/forgot_password.php:34
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/forgot_password.php(34): PDO->prepare('UPDATE users SE...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/forgot_password.php on line 34
+[04-Mar-2026 10:22:04 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'reset_token' in 'SET' in /home/artetran/public_html/sigat_completo/api/forgot_password.php:34
+Stack trace:
+#0 /home/artetran/public_html/sigat_completo/api/forgot_password.php(34): PDO->prepare('UPDATE users SE...')
+#1 {main}
+  thrown in /home/artetran/public_html/sigat_completo/api/forgot_password.php on line 34
