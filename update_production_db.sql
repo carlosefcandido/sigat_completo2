@@ -22,5 +22,13 @@ CREATE TABLE IF NOT EXISTS `beneficiary_benefits` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ==========================================================
--- FIM DA ATUALIZAÇÃO
+-- FIM DA ATUALIZAÇÃO DA TABELA DE BENEFICIÁRIOS
+-- ==========================================================
+
+-- 3. Adicionar coluna logo_url na tabela organization caso não exista
+ALTER TABLE `organization`
+ADD COLUMN `logo_url` VARCHAR(500) DEFAULT NULL AFTER `name`;
+
+-- ==========================================================
+-- FIM DA ATUALIZAÇÃO GERAL
 -- ==========================================================

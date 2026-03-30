@@ -270,6 +270,7 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE TABLE IF NOT EXISTS organization (
     id INT NOT NULL DEFAULT 1 PRIMARY KEY,
     name VARCHAR(255) DEFAULT NULL,
+    logo_url VARCHAR(500) DEFAULT NULL,
     cnpj VARCHAR(25) DEFAULT NULL,
     foundation_year VARCHAR(4) DEFAULT NULL,
     email VARCHAR(255) DEFAULT NULL,
@@ -285,8 +286,8 @@ CREATE TABLE IF NOT EXISTS organization (
     history TEXT DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO organization (id, name, cnpj, foundation_year, email, phone, address, territory, audience, beneficiaries_count, team_size, mission, vision, org_values, history) VALUES
-(1, 'Projeto Arte Transformadora', '26.095.649/0001-27', '2016', 'contato@artetransformadora.org', '(21) 99999-9999', 'Complexo da Penha, Rio de Janeiro - RJ', 'Complexo da Penha e arredores', 'Crianças, adolescentes e jovens em situação de vulnerabilidade', '150', '12', 'Promover a transformação social através da arte e cultura.', 'Ser referência em impacto social e desenvolvimento humano na periferia.', 'Ética, Transparência, Respeito, Criatividade e Solidariedade.', 'O Projeto Arte Transformadora nasceu da necessidade de oferecer alternativas culturais e educativas para jovens do Complexo da Penha...');
+INSERT INTO organization (id, name, logo_url, cnpj, foundation_year, email, phone, address, territory, audience, beneficiaries_count, team_size, mission, vision, org_values, history) VALUES
+(1, 'Projeto Arte Transformadora', NULL, '26.095.649/0001-27', '2016', 'contato@artetransformadora.org', '(21) 99999-9999', 'Complexo da Penha, Rio de Janeiro - RJ', 'Complexo da Penha e arredores', 'Crianças, adolescentes e jovens em situação de vulnerabilidade', '150', '12', 'Promover a transformação social através da arte e cultura.', 'Ser referência em impacto social e desenvolvimento humano na periferia.', 'Ética, Transparência, Respeito, Criatividade e Solidariedade.', 'O Projeto Arte Transformadora nasceu da necessidade de oferecer alternativas culturais e educativas para jovens do Complexo da Penha...');
 
 -- =============================================
 -- DIAGNÓSTICO (SWOT)

@@ -243,7 +243,7 @@
         if (orgData) {
             document.getElementById('print_org_name').textContent = orgData.name;
             document.getElementById('print_org_info').textContent = `${orgData.cnpj || ''} | ${orgData.email || ''} | ${orgData.phone || ''}`;
-            document.getElementById('print_logo').src = orgData.logo_url || 'assets/img/logo-placeholder.png';
+            document.getElementById('print_logo').src = orgData.logo_url ? ('api/file.php?path=' + orgData.logo_url) : 'assets/img/logo-placeholder.png';
         }
     }
 

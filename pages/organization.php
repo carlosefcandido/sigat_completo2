@@ -58,7 +58,7 @@
                         const org = await apiCall('api/organization.php');
                         if (org) {
                                 document.getElementById('org_logo_url').value = org.logo_url || '';
-                                if (org.logo_url) document.getElementById('logo_preview').src = org.logo_url;
+                                if (org.logo_url) document.getElementById('logo_preview').src = 'api/file.php?path=' + org.logo_url;
                                 document.getElementById('org_name').value = org.name || '';
                                 document.getElementById('org_cnpj').value = org.cnpj || '';
                                 document.getElementById('org_year').value = org.foundation_year || '';
@@ -86,7 +86,7 @@
                                 const data = await res.json();
                                 if (data.url) {
                                         document.getElementById('org_logo_url').value = data.url;
-                                        document.getElementById('logo_preview').src = data.url;
+                                        document.getElementById('logo_preview').src = 'api/file.php?path=' + data.url;
                                         showToast('Logo carregada!');
                                 } else {
                                         alert(data.error || 'Erro no upload');
