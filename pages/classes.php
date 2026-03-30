@@ -125,10 +125,13 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="d-flex align-items-center gap-3 mb-4">
-                    <label class="form-label mb-0 fw-bold text-white">Data da Aula:</label>
-                    <input type="date" class="form-control" id="att_date" style="max-width:200px;"
-                        onchange="loadAttendanceForDate()">
+                <div class="mb-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <label class="form-label mb-0 fw-bold text-white">Data da Aula:</label>
+                        <input type="date" class="form-control" id="att_date" style="max-width:200px;"
+                            onchange="checkAndLoadAttendance()">
+                    </div>
+                    <small id="att_allowed_days" class="text-warning mt-2 d-none"><i class="fas fa-info-circle me-1"></i>Dias de aula: </small>
                 </div>
                 <div class="sigat-card p-0 overflow-hidden">
                     <table class="sigat-table mb-0">
@@ -354,14 +357,73 @@
     }
 
     // Attendance Logic
+    function getMostRecentAllowedDate() {
+        if (!currentAttClass || !currentAttClass.days_of_week || currentAttClass.days_of_week.length === 0) {
+            const today = new Date();
+            const tzOffset = today.getTimezoneOffset() * 60000;
+            return new Date(today.getTime() - tzOffset).toISOString().split('T')[0];
+        }
+        
+        const dayMap = { 'dom': 0, 'seg': 1, 'ter': 2, 'qua': 3, 'qui': 4, 'sex': 5, 'sab': 6 };
+        const allowedDays = currentAttClass.days_of_week.map(d => dayMap[d]);
+        
+        const today = new Date();
+        for (let i = 0; i < 7; i++) {
+            const tempDate = new Date(today);
+            tempDate.setDate(today.getDate() - i);
+            if (allowedDays.includes(tempDate.getDay())) {
+                const tzOffset = tempDate.getTimezoneOffset() * 60000;
+                return new Date(tempDate.getTime() - tzOffset).toISOString().slice(0, 10);
+            }
+        }
+        const tzOffset = today.getTimezoneOffset() * 60000;
+        return new Date(today.getTime() - tzOffset).toISOString().split('T')[0];
+    }
+
+    function isDateAllowed(dateString) {
+        if (!currentAttClass || !currentAttClass.days_of_week || currentAttClass.days_of_week.length === 0) return true;
+        const parts = dateString.split('-');
+        const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        const dayOfWeek = date.getDay();
+        const dayMap = { 'dom': 0, 'seg': 1, 'ter': 2, 'qua': 3, 'qui': 4, 'sex': 5, 'sab': 6 };
+        return currentAttClass.days_of_week.map(d => dayMap[d]).includes(dayOfWeek);
+    }
+
+    async function checkAndLoadAttendance() {
+        const dateInput = document.getElementById('att_date');
+        const saveBtn = document.querySelector('#attendanceModal .btn-sigat');
+        if (!isDateAllowed(dateInput.value)) {
+            alert('A data solicitada não faz parte dos dias da semana configurados para esta turma.');
+            document.getElementById('attendanceList').innerHTML = '<tr><td colspan="2" class="text-center py-4 text-warning"><i class="fas fa-exclamation-triangle me-2"></i>Por favor, selecione uma data válida para esta turma.</td></tr>';
+            if(saveBtn) saveBtn.disabled = true;
+            return;
+        }
+        if(saveBtn) saveBtn.disabled = false;
+        await loadAttendanceForDate();
+    }
+
     async function openAttendance(classId) {
         currentAttClass = allClasses.find(c => c.id === classId);
         if (!currentAttClass) return;
 
         document.getElementById('att_class_name').textContent = currentAttClass.name;
-        document.getElementById('att_date').value = new Date().toISOString().split('T')[0];
+        
+        const dayNames = {
+            'seg': 'Segunda', 'ter': 'Terça', 'qua': 'Quarta',
+            'qui': 'Quinta', 'sex': 'Sexta', 'sab': 'Sábado', 'dom': 'Domingo'
+        };
+        const allowedDaysEl = document.getElementById('att_allowed_days');
+        if (currentAttClass.days_of_week && currentAttClass.days_of_week.length > 0) {
+            const names = currentAttClass.days_of_week.map(d => dayNames[d]).join(', ');
+            allowedDaysEl.innerHTML = '<i class="fas fa-info-circle me-1"></i>Dias de aula: ' + names;
+            allowedDaysEl.classList.remove('d-none');
+        } else {
+            allowedDaysEl.classList.add('d-none');
+        }
 
-        await loadAttendanceForDate();
+        document.getElementById('att_date').value = getMostRecentAllowedDate();
+
+        await checkAndLoadAttendance();
         attendanceModal.show();
     }
 
