@@ -168,6 +168,27 @@ CREATE TABLE IF NOT EXISTS lesson_reports (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- =============================================
+-- CONTAS BANCÁRIAS
+-- =============================================
+CREATE TABLE IF NOT EXISTS bank_accounts (
+    id VARCHAR(50) PRIMARY KEY,
+    bank_name VARCHAR(255) NOT NULL,
+    agency VARCHAR(20) DEFAULT NULL,
+    account_number VARCHAR(30) NOT NULL,
+    account_type ENUM('Corrente','Poupança','Pagamento') NOT NULL DEFAULT 'Corrente',
+    holder_name VARCHAR(255) DEFAULT NULL,
+    holder_document VARCHAR(25) DEFAULT NULL,
+    pix_key VARCHAR(255) DEFAULT NULL,
+    project_id VARCHAR(50) DEFAULT NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    observations TEXT DEFAULT NULL,
+    created_by VARCHAR(255) DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =============================================
 -- TRANSAÇÕES FINANCEIRAS
 -- =============================================
 CREATE TABLE IF NOT EXISTS transactions (
@@ -182,13 +203,15 @@ CREATE TABLE IF NOT EXISTS transactions (
     is_recurring TINYINT(1) NOT NULL DEFAULT 0,
     recurrence_period ENUM('Mensal','Semanal','Anual') DEFAULT NULL,
     project_id VARCHAR(50) DEFAULT NULL,
+    bank_account_id VARCHAR(50) DEFAULT NULL,
     status ENUM('Pendente','Pago','Vencido') NOT NULL DEFAULT 'Pendente',
     attachment_url VARCHAR(500) DEFAULT NULL,
     observations TEXT DEFAULT NULL,
     created_by VARCHAR(255) DEFAULT NULL,
     created_by_id INT DEFAULT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL,
+    FOREIGN KEY (bank_account_id) REFERENCES bank_accounts(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- =============================================

@@ -16,7 +16,7 @@ $id = $_GET['id'] ?? null;
 switch ($method) {
     case 'GET':
         requireRole(['ADMIN', 'FINANCEIRO'], true);
-        $stmt = $pdo->query("SELECT t.*, p.name as project_name FROM transactions t LEFT JOIN projects p ON t.project_id = p.id ORDER BY t.date DESC, t.created_at DESC");
+        $stmt = $pdo->query("SELECT t.*, p.name as project_name, ba.bank_name as bank_account_name, ba.account_number as bank_account_number FROM transactions t LEFT JOIN projects p ON t.project_id = p.id LEFT JOIN bank_accounts ba ON t.bank_account_id = ba.id ORDER BY t.date DESC, t.created_at DESC");
         jsonResponse($stmt->fetchAll());
         break;
 
@@ -25,7 +25,7 @@ switch ($method) {
         $data = getJsonBody();
         $tId = generateId();
 
-        $stmt = $pdo->prepare("INSERT INTO transactions (id, description, type, category, value, payment_method, date, due_date, is_recurring, recurrence_period, project_id, status, attachment_url, observations, created_by, created_by_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt = $pdo->prepare("INSERT INTO transactions (id, description, type, category, value, payment_method, date, due_date, is_recurring, recurrence_period, project_id, bank_account_id, status, attachment_url, observations, created_by, created_by_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $stmt->execute([
             $tId,
             sanitize($data['description'] ?? ''),
@@ -37,7 +37,8 @@ switch ($method) {
             $data['due_date'] ?? null,
             $data['is_recurring'] ?? 0,
             $data['recurrence_period'] ?? null,
-            $data['project_id'] ?? null,
+            $data['project_id'] ?: null,
+            $data['bank_account_id'] ?: null,
             $data['status'] ?? 'Pendente',
             $data['attachment_url'] ?? null,
             $data['observations'] ?? '',

@@ -15,8 +15,16 @@ $id = $_GET['id'] ?? null;
 
 switch ($method) {
     case 'GET':
-        $stmt = $pdo->query("SELECT lp.*, c.name as class_name FROM lesson_plans lp LEFT JOIN classes c ON lp.class_id = c.id ORDER BY lp.month DESC, lp.created_at DESC");
-        jsonResponse($stmt->fetchAll());
+        if ($id) {
+            $stmt = $pdo->prepare("SELECT lp.*, c.name as class_name FROM lesson_plans lp LEFT JOIN classes c ON lp.class_id = c.id WHERE lp.id = ?");
+            $stmt->execute([$id]);
+            $plan = $stmt->fetch();
+            if (!$plan) jsonResponse(['error' => 'Plano não encontrado'], 404);
+            jsonResponse($plan);
+        } else {
+            $stmt = $pdo->query("SELECT lp.*, c.name as class_name FROM lesson_plans lp LEFT JOIN classes c ON lp.class_id = c.id ORDER BY lp.month DESC, lp.created_at DESC");
+            jsonResponse($stmt->fetchAll());
+        }
         break;
 
     case 'POST':
@@ -49,6 +57,16 @@ switch ($method) {
         $stmt = $pdo->prepare("SELECT * FROM lesson_plans WHERE id = ?");
         $stmt->execute([$id]);
         jsonResponse($stmt->fetch());
+        break;
+
+    case 'DELETE':
+        if (!$id) jsonResponse(['error' => 'ID obrigatório'], 400);
+        $stmt = $pdo->prepare("SELECT id FROM lesson_plans WHERE id = ?");
+        $stmt->execute([$id]);
+        if (!$stmt->fetch()) jsonResponse(['error' => 'Plano não encontrado'], 404);
+        $pdo->prepare("DELETE FROM lesson_plans WHERE id = ?")->execute([$id]);
+        addAuditLog($pdo, $user['id'], $user['nome'], 'LESSON_PLAN_DELETE', 'lesson_plan', $id);
+        jsonResponse(['success' => true]);
         break;
 
     default:
