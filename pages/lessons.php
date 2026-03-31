@@ -109,6 +109,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button class="btn btn-outline-info" onclick="printPlan()"><i class="fas fa-print me-2"></i>Imprimir</button>
                 <button class="btn btn-sigat" id="planViewEditBtn" onclick="switchToEdit()"><i class="fas fa-edit me-2"></i>Editar</button>
             </div>
         </div>
@@ -138,6 +139,7 @@
 <script>
     let lessonPlans = [], lessonReports = [], lessonClasses = [];
     let currentViewPlan = null, planToDeleteId = null;
+    let orgData = null;
     const planModal = new bootstrap.Modal(document.getElementById('planModal'));
     const planViewModal = new bootstrap.Modal(document.getElementById('planViewModal'));
     const planDeleteModal = new bootstrap.Modal(document.getElementById('planDeleteModal'));
@@ -166,12 +168,14 @@
     }
 
     async function loadLessons() {
-        const [plans, reports, classes] = await Promise.all([
+        const [plans, reports, classes, org] = await Promise.all([
             apiCall('api/lesson_plans.php'),
             apiCall('api/lesson_reports.php'),
-            apiCall('api/classes.php')
+            apiCall('api/classes.php'),
+            apiCall('api/organization.php')
         ]);
         lessonPlans = plans || []; lessonReports = reports || []; lessonClasses = classes || [];
+        orgData = org || null;
         const sel = document.getElementById('lp_class');
         // Keep the default "Selecione" and re-build options
         sel.innerHTML = '<option value="">Selecione</option>';
@@ -262,6 +266,66 @@
         if (!currentViewPlan) return;
         planViewModal.hide();
         setTimeout(() => editPlan(currentViewPlan.id), 350);
+    }
+
+    function printPlan() {
+        if (!currentViewPlan) return;
+        const p = currentViewPlan;
+        const section = (label, value) => value ? `
+            <div class="section">
+                <div class="label">${label}</div>
+                <div class="value">${escapeHtml(value)}</div>
+            </div>` : '';
+
+        const printWindow = window.open('', '_blank', 'width=800,height=600');
+        printWindow.document.write(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Plano de Aula - ${escapeHtml(p.class_name || p.class_id)} - ${formatMonth(p.month)}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; color: #1e293b; padding: 40px; line-height: 1.6; }
+        .header { text-align: center; border-bottom: 3px solid #14b8a6; padding-bottom: 20px; margin-bottom: 30px; }
+        .header-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 10px; border-radius: 8px; }
+        .header .org-name { font-size: 18px; color: #0f172a; font-weight: 700; margin-bottom: 2px; }
+        .header h1 { font-size: 22px; color: #14b8a6; margin-bottom: 4px; margin-top: 8px; }
+        .header .subtitle { font-size: 13px; color: #64748b; }
+        .meta { display: flex; gap: 40px; margin-bottom: 25px; padding: 12px 20px; background: #f1f5f9; border-radius: 8px; }
+        .meta-item { }
+        .meta-item .label { font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 600; letter-spacing: 0.5px; }
+        .meta-item .value { font-size: 15px; font-weight: 600; color: #1e293b; }
+        .section { margin-bottom: 20px; }
+        .section .label { font-size: 12px; text-transform: uppercase; color: #14b8a6; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
+        .section .value { font-size: 14px; white-space: pre-wrap; color: #334155; }
+        .footer { margin-top: 40px; padding-top: 15px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #94a3b8; text-align: center; }
+        @media print {
+            body { padding: 20px; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        ${orgData && orgData.logo_url ? `<img src="${window.location.origin + '/sigat_completo/api/file.php?path=' + orgData.logo_url}" class="header-logo" alt="Logo">` : ''}
+        <div class="org-name">${orgData && orgData.name ? escapeHtml(orgData.name) : ''}</div>
+        <h1>PLANO DE AULA</h1>
+    </div>
+    <div class="meta">
+        <div class="meta-item"><div class="label">Turma</div><div class="value">${escapeHtml(p.class_name || p.class_id)}</div></div>
+        <div class="meta-item"><div class="label">Mês/Período</div><div class="value">${formatMonth(p.month)}</div></div>
+        <div class="meta-item"><div class="label">Criado em</div><div class="value">${formatDate(p.created_at)}</div></div>
+    </div>
+    ${section('Objetivo', p.objective)}
+    ${section('Conteúdo', p.content)}
+    ${section('Metodologia', p.methodology)}
+    ${section('Materiais', p.materials)}
+    ${section('Observações', p.observations)}
+    <div class="footer">Documento gerado pelo SIGAT em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}</div>
+    <script>window.onload = function() { window.print(); }<\/script>
+</body>
+</html>`);
+        printWindow.document.close();
     }
 
     // ── EDIT ────────────────────────────────────────────────
